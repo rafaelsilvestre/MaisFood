@@ -3,23 +3,16 @@ package br.com.omaisfood.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity(name = "companies")
-public class Company {
+@Entity(name = "filters")
+public class Filter {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty
     @Column(name = "name", length = 255, nullable = false)
     private String name;
-
-    @NotEmpty
-    @Column(name = "image", length = 255, nullable = false)
-    private String image;
-
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
 
     public Long getId() {
         return id;
@@ -35,21 +28,5 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 }

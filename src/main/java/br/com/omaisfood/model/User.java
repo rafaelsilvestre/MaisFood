@@ -1,5 +1,7 @@
 package br.com.omaisfood.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -8,24 +10,33 @@ import java.util.List;
 @Entity(name = "users")
 public class User {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty
+    @Column(name = "name", length = 255, nullable = false)
     private String name;
 
     @NotEmpty
+    @Column(name = "last_name", length = 255, nullable = false)
     private String lastName;
 
-    @Column(unique = true)
     @NotEmpty
+    @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
     @NotEmpty
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Address> addresses;
+
+    @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Card> cards;
 
     public Long getId() {
         return id;

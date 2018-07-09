@@ -6,28 +6,35 @@ import javax.validation.constraints.NotEmpty;
 @Entity(name = "adresses")
 public class Address {
     @Id
-    @NotEmpty
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty
+    @Column(name = "state", length = 255, nullable = false)
     private String state;
 
     @NotEmpty
+    @Column(name = "city", length = 255, nullable = false)
     private String city;
 
     @NotEmpty
+    @Column(name = "street", length = 255, nullable = false)
     private String street;
 
     @NotEmpty
+    @Column(name = "district", length = 255, nullable = false)
     private String district;
 
+    @Column(name = "number", length = 255, nullable = false)
     private int number;
 
     @NotEmpty
+    @Column(name = "complement", length = 255, nullable = false)
     private String complement;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Long getId() {
