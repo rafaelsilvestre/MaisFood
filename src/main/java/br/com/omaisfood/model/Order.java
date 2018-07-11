@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "orders")
+@Table(indexes = {@Index(name = "order_status",  columnList="status")})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

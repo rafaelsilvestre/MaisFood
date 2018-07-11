@@ -1,16 +1,12 @@
 package br.com.omaisfood.endpoint;
 
-import br.com.omaisfood.model.Address;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.UserService;
-import jdk.nashorn.internal.ir.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

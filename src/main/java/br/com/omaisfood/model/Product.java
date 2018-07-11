@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "products")
+@Table(indexes = {@Index(name = "product_name",  columnList="name")})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

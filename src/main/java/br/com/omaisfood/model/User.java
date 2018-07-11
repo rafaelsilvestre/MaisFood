@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity(name = "users")
+@Table(indexes = {@Index(name = "user_email",  columnList="email")})
 public class User {
     @Id
     @Column(name = "id")

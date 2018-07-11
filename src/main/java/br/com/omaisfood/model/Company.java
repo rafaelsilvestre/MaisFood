@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "companies")
+@Table(indexes = {@Index(name = "company_name",  columnList="name")})
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

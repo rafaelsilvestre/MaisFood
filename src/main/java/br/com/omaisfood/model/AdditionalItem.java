@@ -1,7 +1,6 @@
 package br.com.omaisfood.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "additional_items")
