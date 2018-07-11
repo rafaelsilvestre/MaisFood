@@ -1,11 +1,13 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.enumerators.DeliveryMethod;
 import br.com.omaisfood.enumerators.OrderStatus;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "orders")
@@ -18,26 +20,29 @@ public class Order {
     @Column(name = "date", length = 255, nullable = false)
     private String date;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "status", length = 255, nullable = false)
     private OrderStatus status;
 
-    @NotEmpty
+    @NotNull
+    @Column(name = "delivery_method", nullable = false)
+    private DeliveryMethod deliveryMethod;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @NotEmpty
     @OneToMany(mappedBy = "order")
     @Fetch(FetchMode.SUBSELECT)
     private List<OrderItem> orderItems;

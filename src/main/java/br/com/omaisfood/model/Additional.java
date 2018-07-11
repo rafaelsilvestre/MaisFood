@@ -2,6 +2,7 @@ package br.com.omaisfood.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "additionals")
 public class Additional {
@@ -16,10 +17,11 @@ public class Additional {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
+    @NotNull
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

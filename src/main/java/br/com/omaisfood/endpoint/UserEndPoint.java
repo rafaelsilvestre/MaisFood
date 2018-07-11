@@ -1,16 +1,21 @@
 package br.com.omaisfood.endpoint;
 
+import br.com.omaisfood.model.Address;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.UserService;
+import jdk.nashorn.internal.ir.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @RestController
 @RequestMapping("user")
 public class UserEndPoint {
-
     @Autowired
     private UserService userService;
 
@@ -19,12 +24,13 @@ public class UserEndPoint {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers(){
-        return new ResponseEntity<>(this.userService.getAllUsers(), HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = this.userService.getAllUsers();
+        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody User user){
-        return new ResponseEntity<>(this.userService.saveUser(user), HttpStatus.OK);
+    public ResponseEntity<User> saveUser(@RequestBody User user){
+        return new ResponseEntity<User>(this.userService.saveUser(user), HttpStatus.OK);
     }
 }

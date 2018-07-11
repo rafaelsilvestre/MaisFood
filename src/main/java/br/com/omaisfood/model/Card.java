@@ -1,18 +1,21 @@
 package br.com.omaisfood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity(name = "cards")
+@Entity(name = "credit_cards")
 public class Card {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
-    @Column(name = "number", length = 255, nullable = false)
-    private String number;
+    @NotNull
+    @Column(name = "number", nullable = false)
+    private Long number;
 
     @NotEmpty
     @Column(name = "owner_name", length = 255, nullable = false)
@@ -20,7 +23,7 @@ public class Card {
 
     @NotEmpty
     @Column(name = "cvc", nullable = false)
-    private int cvc;
+    private String cvc;
 
     @NotEmpty
     @Column(name = "expiry_date", length = 255, nullable = false)
@@ -31,6 +34,7 @@ public class Card {
     private String brand;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -42,11 +46,11 @@ public class Card {
         this.id = id;
     }
 
-    public String getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
@@ -58,11 +62,11 @@ public class Card {
         this.ownerName = ownerName;
     }
 
-    public int getCvc() {
+    public String getCvc() {
         return cvc;
     }
 
-    public void setCvc(int cvc) {
+    public void setCvc(String cvc) {
         this.cvc = cvc;
     }
 

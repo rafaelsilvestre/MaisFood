@@ -2,6 +2,7 @@ package br.com.omaisfood.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "companies")
 public class Company {
@@ -16,6 +17,10 @@ public class Company {
     @NotEmpty
     @Column(name = "image", length = 255, nullable = false)
     private String image;
+
+    @NotNull
+    @Column(name = "minimum_value", nullable = false)
+    private Float minimumValue;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -43,6 +48,14 @@ public class Company {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Float getMinimumValue() {
+        return minimumValue;
+    }
+
+    public void setMinimumValue(Float minimumValue) {
+        this.minimumValue = minimumValue;
     }
 
     public Address getAddress() {

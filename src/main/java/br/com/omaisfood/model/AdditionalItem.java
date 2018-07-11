@@ -2,20 +2,22 @@ package br.com.omaisfood.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "additional_items")
 public class AdditionalItem {
     @Id
     private Long id;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "order_item_id")
     private OrderItem orderItem;

@@ -30,12 +30,12 @@ public class User {
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @Fetch(FetchMode.SELECT)
     private List<Address> addresses;
 
-    @OneToMany(mappedBy = "user")
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @Fetch(FetchMode.SELECT)
     private List<Card> cards;
 
     public Long getId() {
@@ -84,5 +84,13 @@ public class User {
 
     public void setAddresses(Address address) {
         this.addresses.add(address);
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Card card) {
+        this.cards.add(card);
     }
 }

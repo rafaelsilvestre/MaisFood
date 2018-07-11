@@ -1,7 +1,10 @@
 package br.com.omaisfood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "adresses")
 public class Address {
@@ -33,7 +36,9 @@ public class Address {
     @Column(name = "complement", length = 255, nullable = false)
     private String complement;
 
+    @NotNull
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 

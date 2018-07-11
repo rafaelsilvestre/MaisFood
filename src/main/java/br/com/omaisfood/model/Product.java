@@ -5,6 +5,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "products")
@@ -21,7 +22,7 @@ public class Product {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "price", nullable = false)
     private Float price;
 

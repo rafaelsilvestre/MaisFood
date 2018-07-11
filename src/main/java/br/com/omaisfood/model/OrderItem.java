@@ -5,28 +5,29 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Entity(name = "order_itens")
+@Entity(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
