@@ -14,6 +14,10 @@ public class Address {
     private Long id;
 
     @NotEmpty
+    @Column(name = "identifier", length = 255, nullable = false)
+    private String identifier;
+
+    @NotEmpty
     @Column(name = "state", length = 255, nullable = false)
     private String state;
 
@@ -48,6 +52,14 @@ public class Address {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getState() {
