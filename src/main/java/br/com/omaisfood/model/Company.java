@@ -3,6 +3,7 @@ package br.com.omaisfood.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity(name = "companies")
 @Table(indexes = {@Index(name = "company_name",  columnList="name")})
@@ -21,7 +22,7 @@ public class Company {
 
     @NotNull
     @Column(name = "minimum_value", nullable = false)
-    private Float minimumValue;
+    private BigDecimal minimumValue;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -51,11 +52,11 @@ public class Company {
         this.image = image;
     }
 
-    public Float getMinimumValue() {
+    public BigDecimal getMinimumValue() {
         return minimumValue;
     }
 
-    public void setMinimumValue(Float minimumValue) {
+    public void setMinimumValue(BigDecimal minimumValue) {
         this.minimumValue = minimumValue;
     }
 

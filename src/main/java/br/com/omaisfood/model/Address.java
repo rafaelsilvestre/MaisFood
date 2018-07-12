@@ -13,23 +13,23 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "Identificador do endereço não pode estar vazio")
     @Column(name = "identifier", length = 255, nullable = false)
     private String identifier;
 
-    @NotEmpty
+    @NotEmpty(message = "O estado não pode estar vazio")
     @Column(name = "state", length = 255, nullable = false)
     private String state;
 
-    @NotEmpty
+    @NotEmpty(message = "A cidade não pode estar vazio")
     @Column(name = "city", length = 255, nullable = false)
     private String city;
 
-    @NotEmpty
+    @NotEmpty(message = "O endereço não pode estar vazio")
     @Column(name = "street", length = 255, nullable = false)
     private String street;
 
-    @NotEmpty
+    @NotEmpty(message = "O bairro não pode estar vazio")
     @Column(name = "district", length = 255, nullable = false)
     private String district;
 
@@ -40,7 +40,7 @@ public class Address {
     @Column(name = "complement", length = 255, nullable = false)
     private String complement;
 
-    @NotNull
+    @NotNull(message = "Erro ao identificar usuário")
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "user_id")

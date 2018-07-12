@@ -2,6 +2,7 @@ package br.com.omaisfood.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity(name = "additional_items")
 public class AdditionalItem {
@@ -10,7 +11,7 @@ public class AdditionalItem {
 
     @NotNull
     @Column(name = "price", nullable = false)
-    private Float price;
+    private BigDecimal price;
 
     @NotNull
     @Column(name = "quantity", nullable = false)
@@ -29,11 +30,11 @@ public class AdditionalItem {
         this.id = id;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

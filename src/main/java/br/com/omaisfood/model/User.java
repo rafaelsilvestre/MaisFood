@@ -1,5 +1,8 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.utils.Utils;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -28,8 +31,17 @@ public class User {
     private String email;
 
     @NotEmpty
+    @JsonBackReference
     @Column(name = "password", length = 255, nullable = false)
     private String password;
+
+    @JsonInclude()
+    @Transient
+    private String gravatar;
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address addressDefault;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     @Fetch(FetchMode.SELECT)
@@ -38,6 +50,30 @@ public class User {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     @Fetch(FetchMode.SELECT)
     private List<Card> cards;
+
+    User() {
+
+    }
+
+    User(Long id, String name, String lastName, String email, String password, Address addressDefault, List<Address> addresses, List<Card> cards) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.addressDefault = addressDefault;
+        this.addresses = addresses;
+        this.cards = cards;
+    }
+
+    User(Long id, String name, String lastName, String email, String password, Address addressDefault) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.addressDefault = addressDefault;
+    }
 
     public Long getId() {
         return id;
@@ -77,6 +113,25 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getGravatar() {
+        if (getEmail() != null){
+            gravatar = Utils.getAvatarByEmail(getEmail());
+        }
+        return gravatar;
+    }
+
+    public void setGravatar(String gravatar) {
+        this.gravatar = gravatar;
+    }
+
+    public Address getAddressDefault() {
+        return addressDefault;
+    }
+
+    public void setAddressDefault(Address addressDefault) {
+        this.addressDefault = addressDefault;
     }
 
     public List<Address> getAddresses() {

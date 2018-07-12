@@ -1,9 +1,10 @@
 package br.com.omaisfood.service;
 
+import br.com.omaisfood.model.Address;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.repository.UserRepository;
+import br.com.omaisfood.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,10 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    UserService() {
+
+    }
 
     UserService(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -22,10 +27,20 @@ public class UserService {
     }
 
     public User saveUser(User user){
-        // encrypt password
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-        user.setPassword(encoder.encode(user.getPassword()));
+        String passwordEncoded = Utils.cryptPassword(user);
+        user.setPassword(passwordEncoded);
 
         return this.userRepository.save(user);
+    }
+
+    public User setAddressDefaultForUser(Address address, Long userId){
+        Boolean userExists = this.userRepository.existsById(userId);
+        if (userExists){
+            User user = this.userRepository.findById(userId).get();
+            user.setAddressDefault(address);
+            this.userRepository.save(user);
+            return user;
+        }
+        return null;
     }
 }

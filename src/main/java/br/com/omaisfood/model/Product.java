@@ -6,6 +6,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "products")
@@ -25,7 +26,7 @@ public class Product {
 
     @NotNull
     @Column(name = "price", nullable = false)
-    private Float price;
+    private BigDecimal price;
 
     @Column(name = "image", length = 255, nullable = true)
     private String image;
@@ -62,11 +63,11 @@ public class Product {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

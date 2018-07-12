@@ -3,6 +3,7 @@ package br.com.omaisfood.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Entity(name = "additionals")
 public class Additional {
@@ -19,7 +20,7 @@ public class Additional {
 
     @NotNull
     @Column(name = "price", nullable = false)
-    private Float price;
+    private BigDecimal price;
 
     @NotNull
     @ManyToOne
@@ -50,11 +51,11 @@ public class Additional {
         this.description = description;
     }
 
-    public Float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
