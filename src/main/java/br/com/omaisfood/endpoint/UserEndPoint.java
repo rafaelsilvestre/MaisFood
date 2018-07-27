@@ -19,6 +19,7 @@ public class UserEndPoint {
         this.userService = userService;
     }
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
         List<User> users = this.userService.getAllUsers();
