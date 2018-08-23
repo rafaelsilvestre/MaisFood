@@ -13,6 +13,4 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     *  @params User user
     * */
     List<Address> findAddressByUserId(Long user);
-
-
 }
