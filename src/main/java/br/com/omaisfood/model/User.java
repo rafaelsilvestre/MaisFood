@@ -1,5 +1,6 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,7 +9,9 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity(name = "users")
 @Table(indexes = {@Index(name = "user_email",  columnList="email")})
@@ -39,6 +42,10 @@ public class User {
     @Transient
     private String gravatar;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "permissions")
+    private List<Integer> permissions = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address addressDefault;
@@ -52,7 +59,8 @@ public class User {
     private List<Card> cards;
 
     User() {
-
+        this.setPermissions(Permission.ADMIN);
+        this.setPermissions(Permission.COMPANY);
     }
 
     User(Long id, String name, String lastName, String email, String password, Address addressDefault, List<Address> addresses, List<Card> cards) {
@@ -64,6 +72,7 @@ public class User {
         this.addressDefault = addressDefault;
         this.addresses = addresses;
         this.cards = cards;
+        this.setPermissions(Permission.ADMIN);
     }
 
     User(Long id, String name, String lastName, String email, String password, Address addressDefault) {
@@ -73,6 +82,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.addressDefault = addressDefault;
+        this.setPermissions(Permission.ADMIN);
     }
 
     public Long getId() {
@@ -124,6 +134,14 @@ public class User {
 
     public void setGravatar(String gravatar) {
         this.gravatar = gravatar;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions.stream().map(x -> Permission.toEnum(x)).collect(Collectors.toList());
+    }
+
+    public void setPermissions(Permission permission) {
+        this.permissions.add(permission.getIdentifier());
     }
 
     public Address getAddressDefault() {

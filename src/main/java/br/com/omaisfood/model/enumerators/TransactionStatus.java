@@ -1,4 +1,4 @@
-package br.com.omaisfood.enumerators;
+package br.com.omaisfood.model.enumerators;
 
 public enum TransactionStatus {
     PENDING(0), PROCESSING(1), SUCCESSFULLT(2);

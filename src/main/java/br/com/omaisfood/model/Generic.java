@@ -4,6 +4,7 @@ import br.com.omaisfood.utils.EntityEventListeners;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @MappedSuperclass
@@ -12,7 +13,7 @@ import java.util.Date;
 })
 public abstract class Generic {
 
-    public abstract void setCreatedAt(Date createdAt);
+    public abstract void setCreatedAt(LocalDateTime createdAt);
 
-    public abstract void setUpdatedAt(Date updatedAt);
+    public abstract void setUpdatedAt(LocalDateTime updatedAt);
 }

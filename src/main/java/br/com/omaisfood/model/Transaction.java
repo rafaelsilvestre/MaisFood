@@ -1,6 +1,6 @@
 package br.com.omaisfood.model;
 
-import br.com.omaisfood.enumerators.TransactionStatus;
+import br.com.omaisfood.model.enumerators.TransactionStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

@@ -5,8 +5,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "companies")
 @Table(indexes = {@Index(name = "company_name",  columnList="name")})
@@ -15,34 +16,35 @@ public class Company extends Generic {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
+    @NotEmpty(message = "O nome deve ser informado!")
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
-    @NotEmpty
+    @NotEmpty(message = "A descrição deve ser informada!")
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @NotEmpty
-    @Column(name = "image", length = 255, nullable = false)
+    @Column(name = "image", length = 255, nullable = true)
     private String image;
 
+    @NotNull(message = "O valor mínimo deve ser informado!")
     @Column(name = "minimum_value", nullable = false)
     private BigDecimal minimumValue;
+
+    @Column(name = "visibility_status")
+    private Boolean isActivated;
 
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
     @CreatedDate
-    @Temporal(TemporalType.DATE)
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Temporal(TemporalType.DATE)
     @Column(name = "updated_at", nullable = false)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     public Long getId() {
         return id;
@@ -84,6 +86,14 @@ public class Company extends Generic {
         this.minimumValue = minimumValue;
     }
 
+    public Boolean getActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(Boolean activated) {
+        isActivated = activated;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -92,19 +102,19 @@ public class Company extends Generic {
         this.address = address;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

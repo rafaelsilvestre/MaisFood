@@ -1,7 +1,7 @@
 package br.com.omaisfood.model;
 
-import br.com.omaisfood.enumerators.DeliveryMethod;
-import br.com.omaisfood.enumerators.OrderStatus;
+import br.com.omaisfood.model.enumerators.DeliveryMethod;
+import br.com.omaisfood.model.enumerators.OrderStatus;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 

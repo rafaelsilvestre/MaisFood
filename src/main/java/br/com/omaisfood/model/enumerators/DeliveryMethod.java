@@ -1,4 +1,4 @@
-package br.com.omaisfood.enumerators;
+package br.com.omaisfood.model.enumerators;
 
 public enum DeliveryMethod {
     WITHDRAW_IN_STORE(0), DELIVER_IN_AN_ADDRESS(1);

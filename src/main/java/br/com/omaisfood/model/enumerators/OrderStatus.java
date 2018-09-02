@@ -1,4 +1,4 @@
-package br.com.omaisfood.enumerators;
+package br.com.omaisfood.model.enumerators;
 
 public enum OrderStatus {
     PENDING(0), ACCEPTED(1), PROCESSING(2), DELIVERY(3), COMPLETED(4);
