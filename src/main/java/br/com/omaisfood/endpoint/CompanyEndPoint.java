@@ -33,6 +33,12 @@ public class CompanyEndPoint {
         return new ResponseEntity<Company>(this.companyService.saveCompany(company), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Company> getCompany(@PathVariable Long id) {
+        Company company = this.companyService.find(id);
+        return new ResponseEntity<Company>(company, HttpStatus.OK);
+    }
+
     @CrossOrigin
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
