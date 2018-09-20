@@ -1,5 +1,6 @@
 package br.com.omaisfood.endpoint;
 
+import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.CompanyService;
@@ -30,10 +31,8 @@ public class CompanyEndPoint {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Company> saveCompany(@RequestBody RequestWrapper requestWrapper) {
-
-        System.out.println("Company " + requestWrapper.getCompany().getName());
-        System.out.println("User " + requestWrapper.getUser().getName());
+    public ResponseEntity<Company> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
+        System.out.println("Company " + companyForm.getCompanyName());
         //this.companyService.saveCompany(company)
         return new ResponseEntity<Company>(new Company(), HttpStatus.OK);
     }
@@ -59,10 +58,8 @@ public class CompanyEndPoint {
 }
 
 class RequestWrapper {
-    @Valid
     Company company;
 
-    @Valid
     User user;
 
     public Company getCompany() {
