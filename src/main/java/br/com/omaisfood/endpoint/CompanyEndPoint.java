@@ -1,6 +1,7 @@
 package br.com.omaisfood.endpoint;
 
 import br.com.omaisfood.model.Company;
+import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.CompanyService;
 import br.com.omaisfood.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,12 @@ public class CompanyEndPoint {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Company> saveCompany(@Valid @RequestBody Company company) {
-        return new ResponseEntity<Company>(this.companyService.saveCompany(company), HttpStatus.OK);
+    public ResponseEntity<Company> saveCompany(@RequestBody RequestWrapper requestWrapper) {
+
+        System.out.println("Company " + requestWrapper.getCompany().getName());
+        System.out.println("User " + requestWrapper.getUser().getName());
+        //this.companyService.saveCompany(company)
+        return new ResponseEntity<Company>(new Company(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
@@ -50,5 +55,29 @@ public class CompanyEndPoint {
         }
 
         return ResponseEntity.noContent().build();
+    }
+}
+
+class RequestWrapper {
+    @Valid
+    Company company;
+
+    @Valid
+    User user;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
