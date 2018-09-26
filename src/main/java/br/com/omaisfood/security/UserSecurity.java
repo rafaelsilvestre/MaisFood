@@ -1,6 +1,8 @@
 package br.com.omaisfood.security;
 
 import br.com.omaisfood.model.enumerators.Permission;
+import br.com.omaisfood.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +17,10 @@ public class UserSecurity implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSecurity(Long id, String email, String password, List<Permission> permissions) {
+    @Autowired
+    private UserService userService;
+
+    public  UserSecurity(Long id, String email, String password, List<Permission> permissions) {
         super();
         this.id = id;
         this.email = email;

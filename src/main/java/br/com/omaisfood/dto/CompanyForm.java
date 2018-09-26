@@ -3,6 +3,7 @@ package br.com.omaisfood.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 public class CompanyForm {
     @NotEmpty(message = "O nome deve ser informado!")
@@ -12,7 +13,7 @@ public class CompanyForm {
     private String description;
 
     @NotNull(message = "O valor mínimo deve ser informado!")
-    private Float minimumValue;
+    private BigDecimal minimumValue;
 
     @NotNull(message = "O filtro deve ser informado!")
     private Long filter;
@@ -46,11 +47,11 @@ public class CompanyForm {
         this.description = description;
     }
 
-    public Float getMinimumValue() {
+    public BigDecimal getMinimumValue() {
         return minimumValue;
     }
 
-    public void setMinimumValue(Float minimumValue) {
+    public void setMinimumValue(BigDecimal minimumValue) {
         this.minimumValue = minimumValue;
     }
 

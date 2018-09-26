@@ -1,5 +1,6 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -57,6 +58,9 @@ public class User {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     @Fetch(FetchMode.SELECT)
     private List<Card> cards;
+
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Company company;
 
     User() {
         this.setPermissions(Permission.ADMIN);
@@ -166,5 +170,17 @@ public class User {
 
     public void setCards(Card card) {
         this.cards.add(card);
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public static User fromCompanyForm(CompanyForm companyForm) {
+        return new User(null, companyForm.getOwnerName(), companyForm.getOwnerLastname(), companyForm.getEmail(), companyForm.getPassword(), null);
     }
 }

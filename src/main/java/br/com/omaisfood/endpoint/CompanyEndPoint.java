@@ -4,6 +4,7 @@ import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.CompanyService;
+import br.com.omaisfood.service.UserService;
 import br.com.omaisfood.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,12 @@ public class CompanyEndPoint {
     @Autowired
     private CompanyService companyService;
 
-    CompanyEndPoint(CompanyService companyService) {
+    @Autowired
+    private UserService userService;
+
+    CompanyEndPoint(CompanyService companyService, UserService userService) {
         this.companyService = companyService;
+        this.userService = userService;
     }
 
     @CrossOrigin
@@ -31,10 +36,12 @@ public class CompanyEndPoint {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Company> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
-        System.out.println("Company " + companyForm.getCompanyName());
-        //this.companyService.saveCompany(company)
-        return new ResponseEntity<Company>(new Company(), HttpStatus.OK);
+    public ResponseEntity<CompanyForm> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
+        Company company = Company.fromCompanyForm(companyForm);
+        User user = User.fromCompanyForm(companyForm);
+
+        //Company newCompany = this.companyService.saveCompany(company);
+        return new ResponseEntity<CompanyForm>(companyForm, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
@@ -54,27 +61,5 @@ public class CompanyEndPoint {
         }
 
         return ResponseEntity.noContent().build();
-    }
-}
-
-class RequestWrapper {
-    Company company;
-
-    User user;
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

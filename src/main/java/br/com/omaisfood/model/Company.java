@@ -1,5 +1,8 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.dto.CompanyForm;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -8,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "companies")
 @Table(indexes = {@Index(name = "company_name",  columnList="name")})
@@ -38,6 +42,15 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @NotEmpty
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<FilterItem> filters;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -45,6 +58,21 @@ public class Company extends Generic {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public Company(){
+
+    }
+
+    public Company(Long id, String name, String description, String image, BigDecimal minimumValue, Boolean isActivated, Address address, User user){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.minimumValue = minimumValue;
+        this.isActivated = isActivated;
+        this.address = address;
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
@@ -102,6 +130,14 @@ public class Company extends Generic {
         this.address = address;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -116,5 +152,9 @@ public class Company extends Generic {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public static Company fromCompanyForm(CompanyForm companyForm) {
+        return new Company(null, companyForm.getCompanyName(), companyForm.getDescription(), null, companyForm.getMinimumValue(), null, null, null);
     }
 }

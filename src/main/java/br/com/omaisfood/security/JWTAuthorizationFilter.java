@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -43,9 +44,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (jwtUtil.tokenIsValid(token)) {
-            String username = jwtUtil.getUsername(token);
-            UserDetails user = userDetailsService.loadUserByUsername(username);
-            return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            try{
+                String username = jwtUtil.getUsername(token);
+                UserDetails user = userDetailsService.loadUserByUsername(username);
+                if(!user.isAccountNonLocked()){
+                    System.out.println("Usuário Bloqueado!");
+                }
+                return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            }catch (UsernameNotFoundException e){
+                return null;
+            }
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package br.com.omaisfood.utils;
 
+import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
