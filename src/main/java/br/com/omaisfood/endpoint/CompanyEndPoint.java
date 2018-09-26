@@ -2,6 +2,7 @@ package br.com.omaisfood.endpoint;
 
 import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.model.Company;
+import br.com.omaisfood.model.Filter;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.CompanyService;
 import br.com.omaisfood.service.UserService;
@@ -39,7 +40,9 @@ public class CompanyEndPoint {
     public ResponseEntity<CompanyForm> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
         Company company = Company.fromCompanyForm(companyForm);
         User user = User.fromCompanyForm(companyForm);
-
+        for (Filter filter: companyForm.getFilter()){
+            System.out.println(filter);
+        }
         //Company newCompany = this.companyService.saveCompany(company);
         return new ResponseEntity<CompanyForm>(companyForm, HttpStatus.OK);
     }

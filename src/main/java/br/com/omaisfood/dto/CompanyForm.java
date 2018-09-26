@@ -1,9 +1,13 @@
 package br.com.omaisfood.dto;
 
+import br.com.omaisfood.model.Filter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanyForm {
     @NotEmpty(message = "O nome deve ser informado!")
@@ -16,7 +20,7 @@ public class CompanyForm {
     private BigDecimal minimumValue;
 
     @NotNull(message = "O filtro deve ser informado!")
-    private Long filter;
+    private List<Filter> filters;
 
     @NotEmpty(message = "O nome do proprietário deve ser informado!")
     private String ownerName;
@@ -55,12 +59,12 @@ public class CompanyForm {
         this.minimumValue = minimumValue;
     }
 
-    public Long getFilter() {
-        return filter;
+    public List<Filter> getFilter() {
+        return filters;
     }
 
-    public void setFilter(Long filter) {
-        this.filter = filter;
+    public void setFilter(Filter filter) {
+        this.filters.add(filter);
     }
 
     public String getOwnerName() {
