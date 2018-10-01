@@ -26,10 +26,20 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public User findByEmail(User user) {
+        Boolean userByEmail = this.userRepository.existsByEmail(user.getEmail());
+        if(!userByEmail) return null;
+
+        return this.userRepository.findByEmail(user.getEmail());
+    }
+
+    public Boolean existsByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
+
     public User saveUser(User user){
         String passwordEncoded = Utils.cryptPassword(user);
         user.setPassword(passwordEncoded);
-
         return this.userRepository.save(user);
     }
 

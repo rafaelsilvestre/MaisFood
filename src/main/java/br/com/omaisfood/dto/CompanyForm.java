@@ -19,8 +19,8 @@ public class CompanyForm {
     @NotNull(message = "O valor mínimo deve ser informado!")
     private BigDecimal minimumValue;
 
-    @NotNull(message = "O filtro deve ser informado!")
-    private List<Filter> filters;
+    @NotEmpty(message = "Selecione um filtro!")
+    private List<Filter> categories = new ArrayList<Filter>();
 
     @NotEmpty(message = "O nome do proprietário deve ser informado!")
     private String ownerName;
@@ -59,12 +59,12 @@ public class CompanyForm {
         this.minimumValue = minimumValue;
     }
 
-    public List<Filter> getFilter() {
-        return filters;
+    public List<Filter> getCategories() {
+        return categories;
     }
 
-    public void setFilter(Filter filter) {
-        this.filters.add(filter);
+    public void setCategories(List<Filter> categories) {
+        this.categories = categories;
     }
 
     public String getOwnerName() {

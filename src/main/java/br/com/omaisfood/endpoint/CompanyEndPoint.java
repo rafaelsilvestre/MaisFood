@@ -6,6 +6,8 @@ import br.com.omaisfood.model.Filter;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.service.CompanyService;
 import br.com.omaisfood.service.UserService;
+import br.com.omaisfood.service.exception.EmailExistsException;
+import br.com.omaisfood.service.exception.ErrorCreatingUserException;
 import br.com.omaisfood.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,13 +39,18 @@ public class CompanyEndPoint {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<CompanyForm> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
+    public ResponseEntity<?> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
         Company company = Company.fromCompanyForm(companyForm);
         User user = User.fromCompanyForm(companyForm);
-        for (Filter filter: companyForm.getFilter()){
-            System.out.println(filter);
+
+        try{
+            Company newCompany = this.companyService.saveCompany(company, user);
+        }catch (ErrorCreatingUserException e){
+            System.out.println("Erro ao criar usuário - " + e);
+        } catch (EmailExistsException e){
+            System.out.println("Erro ao criar usuário - " + e);
         }
-        //Company newCompany = this.companyService.saveCompany(company);
+
         return new ResponseEntity<CompanyForm>(companyForm, HttpStatus.OK);
     }
 
