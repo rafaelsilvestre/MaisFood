@@ -5,6 +5,7 @@ import br.com.omaisfood.model.User;
 import br.com.omaisfood.repository.UserRepository;
 import br.com.omaisfood.security.UserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,5 +28,13 @@ public class UserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
         return new UserSecurity(user.getId(), user.getEmail(), user.getPassword(), user.getPermissions());
+    }
+
+    public static UserSecurity getUserAuthenticated() {
+        try{
+            return (UserSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            return null;
+        }
     }
 }

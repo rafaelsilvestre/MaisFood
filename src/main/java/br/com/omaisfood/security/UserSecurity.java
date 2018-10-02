@@ -66,4 +66,8 @@ public class UserSecurity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean hasRole(Permission permission) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(permission.getFlag()));
+    }
 }

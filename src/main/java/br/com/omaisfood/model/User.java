@@ -1,6 +1,7 @@
 package br.com.omaisfood.model;
 
 import br.com.omaisfood.dto.CompanyForm;
+import br.com.omaisfood.dto.UserEditForm;
 import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,7 +66,12 @@ public class User {
 
     User() {
         this.setPermissions(Permission.ADMIN);
-        this.setPermissions(Permission.COMPANY);
+    }
+
+    User(@NotNull String name, @NotNull String lastName, @NotNull String email) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
     }
 
     User(Long id, String name, String lastName, String email, String password, Address addressDefault, List<Address> addresses, List<Card> cards) {
@@ -182,5 +189,9 @@ public class User {
 
     public static User fromCompanyForm(CompanyForm companyForm) {
         return new User(null, companyForm.getOwnerName(), companyForm.getOwnerLastname(), companyForm.getEmail(), companyForm.getPassword(), null);
+    }
+
+    public static User fromUserEditForm(Long id, UserEditForm userEditForm) {
+        return new User(id,  userEditForm.getName(), userEditForm.getLastName(), userEditForm.getEmail(), null, null);
     }
 }

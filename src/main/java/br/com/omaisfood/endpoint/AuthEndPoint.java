@@ -1,21 +1,28 @@
 package br.com.omaisfood.endpoint;
 
-import org.springframework.http.HttpStatus;
+import br.com.omaisfood.security.JWTUtil;
+import br.com.omaisfood.security.UserSecurity;
+import br.com.omaisfood.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("auth")
 public class AuthEndPoint {
+    @Autowired
+    private JWTUtil jwtUtil;
 
-    @PostMapping
-    public ResponseEntity<HashMap<String, String>> authUser(){
-        HashMap<String, String> map = new HashMap<>();
-        map.put("token", "sad897dsfa89fsda8sdfa789dfsa8790sdfa9");
-        return new ResponseEntity<HashMap<String, String>>(map, HttpStatus.OK);
+    @PostMapping(value = "/refresh_token")
+    public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
+        UserSecurity userLogged = UserService.getUserAuthenticated();
+        String token = jwtUtil.generateToken(userLogged.getUsername());
+        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("access-control-expose-headers", "Authorization");
+        return ResponseEntity.noContent().build();
     }
 }
