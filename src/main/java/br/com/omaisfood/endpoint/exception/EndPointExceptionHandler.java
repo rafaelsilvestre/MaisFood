@@ -1,5 +1,7 @@
 package br.com.omaisfood.endpoint.exception;
 
+import br.com.omaisfood.service.exception.EmailExistsException;
+import br.com.omaisfood.service.exception.ErrorCreatingUserException;
 import br.com.omaisfood.service.exception.PermissionDaniedException;
 import br.com.omaisfood.service.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -30,9 +32,15 @@ public class EndPointExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
-    @ExceptionHandler(PermissionDaniedException.class)
-    public ResponseEntity<StandardError> userNotFound(PermissionDaniedException e, HttpServletRequest request) {
-        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), "Permission Danied", e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<StandardError> userNotFound(EmailExistsException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "An account with this email already exists", e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(ErrorCreatingUserException.class)
+    public ResponseEntity<StandardError> userNotFound(ErrorCreatingUserException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Bad Request", e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 }

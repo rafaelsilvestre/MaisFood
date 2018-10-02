@@ -64,9 +64,7 @@ public class User {
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
     private Company company;
 
-    User() {
-        this.setPermissions(Permission.ADMIN);
-    }
+    User() { }
 
     User(@NotNull String name, @NotNull String lastName, @NotNull String email) {
         this.name = name;
@@ -83,7 +81,6 @@ public class User {
         this.addressDefault = addressDefault;
         this.addresses = addresses;
         this.cards = cards;
-        this.setPermissions(Permission.ADMIN);
     }
 
     User(Long id, String name, String lastName, String email, String password, Address addressDefault) {
@@ -93,7 +90,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.addressDefault = addressDefault;
-        this.setPermissions(Permission.ADMIN);
     }
 
     public Long getId() {

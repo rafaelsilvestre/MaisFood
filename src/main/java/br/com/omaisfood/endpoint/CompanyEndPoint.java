@@ -39,19 +39,13 @@ public class CompanyEndPoint {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<?> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
+    public ResponseEntity<Company> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
         Company company = Company.fromCompanyForm(companyForm);
         User user = User.fromCompanyForm(companyForm);
 
-        try{
-            Company newCompany = this.companyService.saveCompany(company, user);
-        }catch (ErrorCreatingUserException e){
-            System.out.println("Erro ao criar usuário - " + e);
-        } catch (EmailExistsException e){
-            System.out.println("Erro ao criar usuário - " + e);
-        }
-
-        return new ResponseEntity<CompanyForm>(companyForm, HttpStatus.OK);
+        // Save this company
+        Company newCompany = this.companyService.saveCompany(company, user);
+        return new ResponseEntity<Company>(newCompany, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")

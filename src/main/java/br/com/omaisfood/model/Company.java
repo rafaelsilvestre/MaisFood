@@ -1,6 +1,7 @@
 package br.com.omaisfood.model;
 
 import br.com.omaisfood.dto.CompanyForm;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
@@ -42,7 +43,7 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @NotEmpty
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
