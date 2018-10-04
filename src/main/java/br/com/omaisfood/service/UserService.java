@@ -84,6 +84,9 @@ public class UserService {
     }
 
     public User saveUser(User user){
+        if(user.getPermissions().size() == 0)
+            user.setPermissions(Permission.ADMIN);
+
         String passwordEncoded = Utils.cryptPassword(user);
         user.setPassword(passwordEncoded);
         return this.userRepository.save(user);

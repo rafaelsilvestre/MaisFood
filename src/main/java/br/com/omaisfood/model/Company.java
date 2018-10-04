@@ -37,7 +37,10 @@ public class Company extends Generic {
     private BigDecimal minimumValue;
 
     @Column(name = "visibility_status")
-    private Boolean isActivated;
+    private Boolean isVisible = true;
+
+    @Column(name = "is_inactive")
+    private Boolean isInactive = false;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -51,6 +54,10 @@ public class Company extends Generic {
     @OneToMany(mappedBy = "company")
     @Fetch(FetchMode.SUBSELECT)
     private List<FilterItem> filters;
+
+    @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Product> products;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -70,7 +77,7 @@ public class Company extends Generic {
         this.description = description;
         this.image = image;
         this.minimumValue = minimumValue;
-        this.isActivated = isActivated;
+        this.isVisible = isActivated;
         this.address = address;
         this.user = user;
     }
@@ -115,12 +122,20 @@ public class Company extends Generic {
         this.minimumValue = minimumValue;
     }
 
-    public Boolean getActivated() {
-        return isActivated;
+    public Boolean isVisible() {
+        return isVisible;
     }
 
-    public void setActivated(Boolean activated) {
-        isActivated = activated;
+    public void setVisibility(Boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public Boolean isInactive() {
+        return isInactive;
+    }
+
+    public void setInactive(Boolean isInactive) {
+        this.isInactive = isInactive;
     }
 
     public Address getAddress() {
@@ -137,6 +152,14 @@ public class Company extends Generic {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public LocalDateTime getCreatedAt() {

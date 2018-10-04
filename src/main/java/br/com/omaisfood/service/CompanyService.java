@@ -53,13 +53,10 @@ public class CompanyService {
         }
     }
 
-    public Company find(Long id){
+    public Company findById(Long id){
         Boolean isExists = this.companyRepository.existsById(id);
-        if(!isExists){
-            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id);
-        }
-
-        Company company = companyRepository.findById(id).get();
-        return company;
+        if(!isExists)
+            throw new ObjectNotFoundException("Empresa não encontrada");
+        return this.companyRepository.findById(id).get();
     }
 }

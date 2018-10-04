@@ -1,9 +1,6 @@
 package br.com.omaisfood.endpoint.exception;
 
-import br.com.omaisfood.service.exception.EmailExistsException;
-import br.com.omaisfood.service.exception.ErrorCreatingUserException;
-import br.com.omaisfood.service.exception.PermissionDaniedException;
-import br.com.omaisfood.service.exception.UserNotFoundException;
+import br.com.omaisfood.service.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -40,7 +37,25 @@ public class EndPointExceptionHandler {
 
     @ExceptionHandler(ErrorCreatingUserException.class)
     public ResponseEntity<StandardError> userNotFound(ErrorCreatingUserException e, HttpServletRequest request) {
-        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Bad Request", e.getMessage(), request.getRequestURI());
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), e.getLocalizedMessage(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(PermissionDaniedException.class)
+    public ResponseEntity<StandardError> userNotFound(PermissionDaniedException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), e.getLocalizedMessage(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<StandardError> userNotFound(ObjectNotFoundException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), e.getLocalizedMessage(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(InactiveCompanyException.class)
+    public ResponseEntity<StandardError> userNotFound(InactiveCompanyException e, HttpServletRequest request) {
+        StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), e.getLocalizedMessage(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 }

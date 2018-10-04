@@ -50,7 +50,7 @@ public class CompanyEndPoint {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Company> getCompany(@PathVariable Long id) {
-        Company company = this.companyService.find(id);
+        Company company = this.companyService.findById(id);
         return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class CompanyEndPoint {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         try{
-            Company company = companyService.find(id);
+            Company company = companyService.findById(id);
             companyService.deleteCompany(company);
         }catch (ObjectNotFoundException e){
 

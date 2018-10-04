@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "products")
-@Table(indexes = {@Index(name = "product_name",  columnList="name")})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +33,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @OneToMany(mappedBy = "product")
     @Fetch(FetchMode.SUBSELECT)
@@ -85,6 +88,14 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public List<Additional> getAdditionals() {
