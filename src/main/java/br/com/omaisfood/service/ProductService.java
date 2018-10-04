@@ -41,7 +41,7 @@ public class ProductService {
             throw new PermissionDaniedException("Permission danied");
 
         // Verify if company is inactive
-        if(!company.isInactive())
+        if(company.isInactive())
             throw new InactiveCompanyException("Company is inactive");
 
         // Define product owner

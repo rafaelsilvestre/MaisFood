@@ -54,6 +54,12 @@ public class CompanyEndPoint {
         return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/data")
+    public ResponseEntity<Company> getCompanyByUser() {
+        Company company = this.companyService.getCompanyByUserLogged();
+        return new ResponseEntity<Company>(company, HttpStatus.OK);
+    }
+
     @CrossOrigin
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {

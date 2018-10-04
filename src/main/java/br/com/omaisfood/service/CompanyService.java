@@ -4,10 +4,8 @@ import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
 import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.repository.CompanyRepository;
-import br.com.omaisfood.service.exception.DataIntegrityException;
-import br.com.omaisfood.service.exception.EmailExistsException;
-import br.com.omaisfood.service.exception.ErrorCreatingUserException;
-import br.com.omaisfood.service.exception.ObjectNotFoundException;
+import br.com.omaisfood.security.UserSecurity;
+import br.com.omaisfood.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -58,5 +56,15 @@ public class CompanyService {
         if(!isExists)
             throw new ObjectNotFoundException("Empresa não encontrada");
         return this.companyRepository.findById(id).get();
+    }
+
+    public Company getCompanyByUserLogged() {
+        UserSecurity userLogged = UserService.getUserAuthenticated();
+        User user = this.userService.findById(userLogged.getId());
+
+        if(!userLogged.hasRole(Permission.COMPANY) || user.getCompany().getId() == null)
+            throw new BadRequestException("Erro ao buscar empresa");
+
+        return this.companyRepository.findById(user.getCompany().getId()).get();
     }
 }
