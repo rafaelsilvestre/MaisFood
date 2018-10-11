@@ -1,5 +1,8 @@
 package br.com.omaisfood.model;
 
+import br.com.omaisfood.dto.CategoryForm;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -19,7 +22,15 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonBackReference
     private Company company;
+
+    Category() { }
+
+    Category(String name, Company company) {
+        this.name = name;
+        this.company = company;
+    }
 
     public Long getId() {
         return id;
@@ -51,5 +62,9 @@ public class Category {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public static Category fromCategoryForm(CategoryForm categoryForm) {
+        return new Category(categoryForm.getCategoryName(), null);
     }
 }

@@ -59,6 +59,10 @@ public class Company extends Generic {
     @Fetch(FetchMode.SUBSELECT)
     private List<Product> products;
 
+    @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Category> categories;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -160,6 +164,14 @@ public class Company extends Generic {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public LocalDateTime getCreatedAt() {
