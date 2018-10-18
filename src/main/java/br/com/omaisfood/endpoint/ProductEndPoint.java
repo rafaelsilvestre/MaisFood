@@ -35,5 +35,10 @@ public class ProductEndPoint {
         return new ResponseEntity<Product>(newProduct, HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        this.productService.deleteProduct(productId);
 
+        return ResponseEntity.noContent().build();
+    }
 }

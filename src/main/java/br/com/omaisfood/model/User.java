@@ -37,7 +37,7 @@ public class User {
     private String email;
 
     @NotEmpty
-    @JsonBackReference
+    @JsonBackReference("password")
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
@@ -62,7 +62,7 @@ public class User {
     private List<Card> cards;
 
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private Company company;
+    private Company company = null;
 
     User() { }
 

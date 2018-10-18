@@ -18,11 +18,12 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
+    @JsonBackReference("products")
     private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    @JsonBackReference
+    @JsonBackReference("company")
     private Company company;
 
     Category() { }

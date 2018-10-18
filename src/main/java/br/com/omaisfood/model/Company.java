@@ -46,7 +46,7 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @JsonBackReference
+    @JsonBackReference("user")
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;

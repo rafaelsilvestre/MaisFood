@@ -1,6 +1,8 @@
 package br.com.omaisfood.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -33,11 +35,10 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonBackReference
     private Category category;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("company")
     @JoinColumn(name = "company_id")
     private Company company;
 
