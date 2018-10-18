@@ -1,6 +1,7 @@
 package br.com.omaisfood.model;
 
 import br.com.omaisfood.dto.CompanyForm;
+import br.com.omaisfood.dto.CompanyFormEdit;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -192,5 +193,9 @@ public class Company extends Generic {
 
     public static Company fromCompanyForm(CompanyForm companyForm) {
         return new Company(null, companyForm.getCompanyName(), companyForm.getDescription(), null, companyForm.getMinimumValue(), null, null, null);
+    }
+
+    public static Company fromCompanyFormEdit(CompanyFormEdit companyFormEdit) {
+        return new Company(null, companyFormEdit.getCompanyName(), companyFormEdit.getDescription(), null, companyFormEdit.getMinimumValue(), null, null, null);
     }
 }

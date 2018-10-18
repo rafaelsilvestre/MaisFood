@@ -41,4 +41,17 @@ public class ProductEndPoint {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(path = "/{productId}/data")
+    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+        Product product = this.productService.getProductById(productId);
+        return new ResponseEntity<Product>(product, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{productId}")
+    public ResponseEntity<Product> updateProduct(@Valid @RequestBody Product product, @PathVariable Long productId) {
+        product.setId(productId);
+        Product productUpdate = this.productService.updateProduct(product);
+        return new ResponseEntity<Product>(productUpdate, HttpStatus.OK);
+    }
 }

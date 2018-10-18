@@ -67,4 +67,23 @@ public class CompanyService {
 
         return this.companyRepository.findById(user.getCompany().getId()).get();
     }
+
+    public Company updateCompany(Company newCompany, Long companyId) {
+        UserSecurity userLogged = UserService.getUserAuthenticated();
+
+        Boolean companyExists = this.companyRepository.existsById(companyId);
+        if(!companyExists)
+            throw new BadRequestException("Error fetching company");
+
+        Company company = this.companyRepository.findById(companyId).get();
+
+        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && !company.getUser().getId().equals(userLogged.getId()))
+            throw new PermissionDaniedException("Permission danied");
+
+        company.setName(newCompany.getName());
+        company.setDescription(newCompany.getDescription());
+        company.setMinimumValue(newCompany.getMinimumValue());
+
+        return this.companyRepository.save(company);
+    }
 }

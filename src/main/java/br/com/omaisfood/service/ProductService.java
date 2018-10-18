@@ -70,4 +70,42 @@ public class ProductService {
 
         this.productRepository.delete(product);
     }
+
+    public Product getProductById(Long productId) {
+        UserSecurity userLogged = UserService.getUserAuthenticated();
+
+        // Verify if product exists
+        Boolean isExists = this.productRepository.existsById(productId);
+        if(!isExists){
+            throw new BadRequestException("Product not exists");
+        }
+
+        Product product = this.productRepository.findById(productId).get();
+
+        // Verify this user is system admin or company owner
+        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && (product.getCompany() != null && !product.getCompany().getUser().getId().equals(userLogged.getId())))
+            throw new PermissionDaniedException("Permission danied");
+
+        return product;
+    }
+
+    public Product updateProduct(Product newProduct) {
+        UserSecurity userLogged = UserService.getUserAuthenticated();
+
+        // Verify if product exists
+        Boolean isExists = this.productRepository.existsById(newProduct.getId());
+        if(!isExists)
+            throw new BadRequestException("Product not exists");
+
+        Product product = this.productRepository.findById(newProduct.getId()).get();
+
+        // Verify this user is system admin or company owner
+        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && !product.getCompany().getUser().getId().equals(userLogged.getId()))
+            throw new PermissionDaniedException("Permission danied");
+
+        // Set current company as owner
+        newProduct.setCompany(product.getCompany());
+
+        return this.productRepository.save(newProduct);
+    }
 }

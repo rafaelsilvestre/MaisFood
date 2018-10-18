@@ -1,6 +1,7 @@
 package br.com.omaisfood.endpoint;
 
 import br.com.omaisfood.dto.CompanyForm;
+import br.com.omaisfood.dto.CompanyFormEdit;
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.Filter;
 import br.com.omaisfood.model.User;
@@ -71,5 +72,11 @@ public class CompanyEndPoint {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(path = "/{companyId}")
+    public ResponseEntity<Company> updateCompany(@RequestBody @Valid CompanyFormEdit companyFormEdit, @PathVariable Long companyId) {
+        Company company = this.companyService.updateCompany(Company.fromCompanyFormEdit(companyFormEdit), companyId);
+        return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
 }
