@@ -2,14 +2,18 @@ package br.com.omaisfood.endpoint;
 
 import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.dto.CompanyFormEdit;
+import br.com.omaisfood.dto.WorkedDaysForm;
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.Filter;
 import br.com.omaisfood.model.User;
+import br.com.omaisfood.model.WorkedDay;
 import br.com.omaisfood.service.CompanyService;
 import br.com.omaisfood.service.UserService;
+import br.com.omaisfood.service.WorkedDayService;
 import br.com.omaisfood.service.exception.EmailExistsException;
 import br.com.omaisfood.service.exception.ErrorCreatingUserException;
 import br.com.omaisfood.service.exception.ObjectNotFoundException;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +29,14 @@ public class CompanyEndPoint {
     private CompanyService companyService;
 
     @Autowired
+    private WorkedDayService workedDayService;
+
+    @Autowired
     private UserService userService;
 
-    CompanyEndPoint(CompanyService companyService, UserService userService) {
+    CompanyEndPoint(CompanyService companyService, WorkedDayService workedDayService, UserService userService) {
         this.companyService = companyService;
+        this.workedDayService = workedDayService;
         this.userService = userService;
     }
 
@@ -78,5 +86,20 @@ public class CompanyEndPoint {
     public ResponseEntity<Company> updateCompany(@RequestBody @Valid CompanyFormEdit companyFormEdit, @PathVariable Long companyId) {
         Company company = this.companyService.updateCompany(Company.fromCompanyFormEdit(companyFormEdit), companyId);
         return new ResponseEntity<Company>(company, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/{companyId}/worked-days")
+    public ResponseEntity<List<WorkedDay>> getWorkedDayByCompany(@PathVariable Long companyId) {
+        List<WorkedDay> days = this.workedDayService.getWorkedDayByCompany(companyId);
+        return new ResponseEntity<List<WorkedDay>>(days, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/{companyId}/worked-days")
+    public ResponseEntity<List<WorkedDay>> saveWorkedDayByCompany(@RequestBody @Valid WorkedDaysForm workedDaysForm, @PathVariable Long companyId) {
+        Company company = this.companyService.findById(companyId);
+        company.setWorkedDays(workedDaysForm.getWorkedDays());
+
+        List<WorkedDay> workedDays = this.companyService.saveCompany(company).getWorkedDays();
+        return new ResponseEntity<List<WorkedDay>>(workedDays, HttpStatus.OK);
     }
 }

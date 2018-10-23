@@ -47,6 +47,10 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<WorkedDay> workedDays;
+
     @JsonBackReference("user")
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -72,9 +76,7 @@ public class Company extends Generic {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Company(){
-
-    }
+    public Company(){ }
 
     public Company(Long id, String name, String description, String image, BigDecimal minimumValue, Boolean isActivated, Address address, User user){
         this.id = id;
@@ -149,6 +151,14 @@ public class Company extends Generic {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<WorkedDay> getWorkedDays() {
+        return workedDays;
+    }
+
+    public void setWorkedDays(List<WorkedDay> workedDays) {
+        this.workedDays = workedDays;
     }
 
     public User getUser() {

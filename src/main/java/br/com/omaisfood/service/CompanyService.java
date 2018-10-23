@@ -43,6 +43,10 @@ public class CompanyService {
         return this.companyRepository.save(company);
     }
 
+    public Company saveCompany(Company company) {
+        return this.companyRepository.save(company);
+    }
+
     public void deleteCompany(Company company) {
         try {
             this.companyRepository.delete(company);
