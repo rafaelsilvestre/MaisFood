@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,7 +48,8 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @Size(min=7, max=7, message = "Informe os sete dias da semana!")
     @Fetch(FetchMode.SUBSELECT)
     private List<WorkedDay> workedDays;
 

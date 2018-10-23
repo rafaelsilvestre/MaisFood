@@ -99,7 +99,11 @@ public class CompanyEndPoint {
         Company company = this.companyService.findById(companyId);
         company.setWorkedDays(workedDaysForm.getWorkedDays());
 
-        List<WorkedDay> workedDays = this.companyService.saveCompany(company).getWorkedDays();
-        return new ResponseEntity<List<WorkedDay>>(workedDays, HttpStatus.OK);
+        workedDaysForm.getWorkedDays().forEach(workedDay -> {
+            workedDay.getCompany().setId(companyId);
+        });
+
+        this.companyService.saveCompany(company);
+        return new ResponseEntity<List<WorkedDay>>(company.getWorkedDays(), HttpStatus.OK);
     }
 }

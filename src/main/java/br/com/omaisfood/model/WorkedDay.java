@@ -34,6 +34,15 @@ public class WorkedDay {
     @JsonBackReference("company")
     private Company company;
 
+    public WorkedDay() { }
+
+    public WorkedDay(TypeDay day, String startTime, String endTime, Long companyId) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.getCompany().setId(companyId);
+    }
+
     public Long getId() {
         return id;
     }
