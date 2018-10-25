@@ -2,9 +2,7 @@ package br.com.omaisfood.service;
 
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
-import br.com.omaisfood.model.WorkedDay;
 import br.com.omaisfood.model.enumerators.Permission;
-import br.com.omaisfood.model.enumerators.TypeDay;
 import br.com.omaisfood.repository.CompanyRepository;
 import br.com.omaisfood.security.UserSecurity;
 import br.com.omaisfood.service.exception.*;
@@ -13,7 +11,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
