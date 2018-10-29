@@ -48,13 +48,14 @@ public class Company extends Generic {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "company")
-    private WorkedWeek workedWeek;
-
     @JsonBackReference("user")
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany
+    @Fetch(FetchMode.SUBSELECT)
+    private List<WorkedDay> workedDays;
 
     @OneToMany(mappedBy = "company")
     @Fetch(FetchMode.SUBSELECT)
@@ -153,20 +154,20 @@ public class Company extends Generic {
         this.address = address;
     }
 
-    public WorkedWeek getWorkedWeek() {
-        return workedWeek;
-    }
-
-    public void setWorkedWeek(WorkedWeek workedWeek) {
-        this.workedWeek = workedWeek;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<WorkedDay> getWorkedDays() {
+        return workedDays;
+    }
+
+    public void setWorkedDays(List<WorkedDay> workedDays) {
+        this.workedDays = workedDays;
     }
 
     public List<Product> getProducts() {

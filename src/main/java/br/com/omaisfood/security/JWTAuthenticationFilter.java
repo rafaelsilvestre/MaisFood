@@ -1,6 +1,8 @@
 package br.com.omaisfood.security;
 
+import br.com.omaisfood.model.enumerators.Permission;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,14 +44,28 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
         String username = ((UserSecurity) auth.getPrincipal()).getUsername();
+        Long id = ((UserSecurity) auth.getPrincipal()).getId();
         String token = jwtUtil.generateToken(username);
+
+        // Verify roles
+        Boolean isCompany = ((UserSecurity) auth.getPrincipal()).hasRole(Permission.COMPANY);
+        Boolean isAdmin = ((UserSecurity) auth.getPrincipal()).hasRole(Permission.ADMIN);
+        Boolean isClient = ((UserSecurity) auth.getPrincipal()).hasRole(Permission.CLIENT);
+
+        Permission role = null;
+        if (isCompany)
+            role = Permission.COMPANY;
+        else if (isAdmin)
+            role = Permission.COMPANY;
+        else if (isClient)
+            role = Permission.COMPANY;
+
         res.addHeader("Authorization", "Bearer " + token);
         res.addHeader("access-control-expose-headers", "Authorization");
+        res.addHeader("Content-Type", "application/json");
+
+        res.getWriter().write("{\"role\": " + role + ", \"id\": " + id + "}");
     }
 }
