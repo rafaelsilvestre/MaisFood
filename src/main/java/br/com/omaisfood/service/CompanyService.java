@@ -90,4 +90,13 @@ public class CompanyService {
 
         return this.companyRepository.save(company);
     }
+
+    public Company getCompanyByUserId(Long userId) {
+        Boolean companyExists = this.companyRepository.existsByUserId(userId);
+        if(!companyExists){
+            return null;
+        }
+
+        return this.companyRepository.getCompanyByUserId(userId);
+    }
 }

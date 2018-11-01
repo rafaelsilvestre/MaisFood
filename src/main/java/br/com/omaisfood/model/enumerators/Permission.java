@@ -25,7 +25,6 @@ public enum Permission {
         }
 
         for (Permission x : Permission.values()){
-            System.out.println("Permission " + x.getFlag());
             if(identifier.equals(x.getIdentifier())){
                 return x;
             }

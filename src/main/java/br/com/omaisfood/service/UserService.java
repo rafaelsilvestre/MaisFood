@@ -8,7 +8,6 @@ import br.com.omaisfood.security.UserSecurity;
 import br.com.omaisfood.service.exception.PermissionDaniedException;
 import br.com.omaisfood.service.exception.UserNotFoundException;
 import br.com.omaisfood.utils.Utils;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

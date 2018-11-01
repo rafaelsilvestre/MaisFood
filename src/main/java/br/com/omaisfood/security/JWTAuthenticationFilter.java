@@ -1,6 +1,8 @@
 package br.com.omaisfood.security;
 
+import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.enumerators.Permission;
+import br.com.omaisfood.service.CompanyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,6 +24,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
 
     private JWTUtil jwtUtil;
+
+    @Autowired
+    private CompanyService companyService;
+
+    JWTAuthenticationFilter() { }
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
@@ -46,7 +54,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
         String username = ((UserSecurity) auth.getPrincipal()).getUsername();
-        Long id = ((UserSecurity) auth.getPrincipal()).getId();
+        Long userId = ((UserSecurity) auth.getPrincipal()).getId();
         String token = jwtUtil.generateToken(username);
 
         // Verify roles
@@ -58,14 +66,27 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         if (isCompany)
             role = Permission.COMPANY;
         else if (isAdmin)
-            role = Permission.COMPANY;
+            role = Permission.ADMIN;
         else if (isClient)
-            role = Permission.COMPANY;
+            role = Permission.CLIENT;
+
+        Company company = null;
+        if(role != null && role == Permission.COMPANY)
+            company = ((UserSecurity) auth.getPrincipal()).getCompany();
 
         res.addHeader("Authorization", "Bearer " + token);
         res.addHeader("access-control-expose-headers", "Authorization");
         res.addHeader("Content-Type", "application/json");
 
-        res.getWriter().write("{\"role\": " + role + ", \"id\": " + id + "}");
+        StringBuilder response = new StringBuilder();
+        response.append("{");
+        response.append("\"role\": \"" + role.toString() + "\",");
+        response.append("\"user_id\": " + userId);
+
+        if(company != null && role != null && role == Permission.COMPANY)
+            response.append(",\"company_id\": " + company.getId());
+        response.append("}");
+
+        res.getWriter().write(response.toString());
     }
 }

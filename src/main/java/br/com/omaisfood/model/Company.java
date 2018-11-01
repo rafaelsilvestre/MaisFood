@@ -54,7 +54,6 @@ public class Company extends Generic {
     private User user;
 
     @OneToMany
-    @Fetch(FetchMode.SUBSELECT)
     private List<WorkedDay> workedDays;
 
     @OneToMany(mappedBy = "company")

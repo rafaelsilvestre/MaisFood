@@ -4,6 +4,7 @@ import br.com.omaisfood.model.enumerators.TypeDay;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "worked_day")
 public class WorkedDay {
@@ -11,7 +12,7 @@ public class WorkedDay {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
+    @NotNull
     private TypeDay day;
 
     @NotEmpty
@@ -20,8 +21,12 @@ public class WorkedDay {
     @NotEmpty
     private String endTime;
 
-    @NotEmpty
     private boolean enabled;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Long getId() {
         return id;
@@ -61,5 +66,13 @@ public class WorkedDay {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
