@@ -58,6 +58,10 @@ public class WorkedDayService {
         WorkedDay[] days = new WorkedDay[7];
         int daysFound = 0;
         for(WorkedDay workedDay: workedDays){
+            if(workedDay.getStartTime() == null && workedDay.getEndTime() == null){
+                continue;
+            }
+
             Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
             Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
