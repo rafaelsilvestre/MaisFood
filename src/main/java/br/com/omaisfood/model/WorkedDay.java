@@ -1,6 +1,7 @@
 package br.com.omaisfood.model;
 
 import br.com.omaisfood.model.enumerators.TypeDay;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -25,6 +26,7 @@ public class WorkedDay {
 
     @NotNull
     @ManyToOne
+    @JsonBackReference("workedDayCompany")
     @JoinColumn(name = "company_id")
     private Company company;
 

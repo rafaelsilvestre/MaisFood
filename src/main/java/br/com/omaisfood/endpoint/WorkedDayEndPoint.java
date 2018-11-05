@@ -25,9 +25,4 @@ public class WorkedDayEndPoint {
     public ResponseEntity<List<WorkedDay>> saveWorkedDay(@RequestBody List<WorkedDay> workedDays,@PathVariable Long companyId) {
         return new ResponseEntity<List<WorkedDay>>(this.workedDayService.saveWorkedDay(workedDays, companyId), HttpStatus.OK);
     }
-
-    @PutMapping(path = "/{companyId}")
-    public ResponseEntity<List<WorkedDay>> updateWorkedDay(@RequestBody List<WorkedDay> workedDays,@PathVariable Long companyId) {
-        return new ResponseEntity<List<WorkedDay>>(this.workedDayService.updateWorkedDay(workedDays, companyId), HttpStatus.OK);
-    }
 }

@@ -28,92 +28,88 @@ public class WorkedDayService {
     }
 
     public List<WorkedDay> saveWorkedDay(List<WorkedDay> workedDays, Long companyId) {
-        if(workedDays.size() < 7)
+        if(workedDays.size() < 7){
             throw new BadRequestException("Please report every day of the week");
+        }
 
         UserSecurity userLogged = UserService.getUserAuthenticated();
         Company company = this.companyService.findById(companyId);
-        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && !company.getUser().getId().equals(userLogged.getId()))
+        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) &&
+                !company.getUser().getId().equals(userLogged.getId())){
             throw new PermissionDaniedException("Permission danied");
-
-        if(!company.getWorkedDays().isEmpty())
-            throw new BadRequestException("There are already days of work for this company");
+        }
 
         List<WorkedDay> currentDays = this.verifyWorkedDays(workedDays, company);
-        if(currentDays == null)
+        if(currentDays == null){
             throw new BadRequestException("Some of the dates may be wrong or do not exist");
+        }
 
-        return this.workedDayRepository.saveAll(workedDays);
+        if(company.getWorkedDays().size() == 7){
+            currentDays.forEach(workedDay -> {
+                WorkedDay day = this.workedDayRepository.getWorkedDayByDayAndCompanyId(workedDay.getDay(), companyId);
+                if(day != null) workedDay.setId(day.getId());
+            });
+        }
+
+        return this.workedDayRepository.saveAll(currentDays);
     }
 
     public List<WorkedDay> verifyWorkedDays(List<WorkedDay> workedDays, Company company) {
         WorkedDay[] days = new WorkedDay[7];
         int daysFound = 0;
         for(WorkedDay workedDay: workedDays){
-            if(workedDay.getDay().equals(TypeDay.SUNDAY) && days[0] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
+            Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
+            Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.SUNDAY) && days[0] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[0] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.MONDAY) && days[1] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.MONDAY) && days[1] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[1] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.TUESDAY) && days[2] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.TUESDAY) && days[2] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[2] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.WEDNESDAY) && days[3] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.WEDNESDAY) && days[3] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[3] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.THURSDAY) && days[4] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.THURSDAY) && days[4] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[4] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.FRIDAY) && days[5] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.FRIDAY) && days[5] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
                 days[5] = workedDay;
                 daysFound++;
             }
-            if(workedDay.getDay().equals(TypeDay.SATURDAY) && days[6] == null) {
-                Integer startTime = Integer.parseInt(workedDay.getStartTime().substring(0, 2));
-                Integer endTime = Integer.parseInt(workedDay.getEndTime().substring(0, 2));
 
+            if(workedDay.getDay().equals(TypeDay.SATURDAY) && days[6] == null) {
                 if(startTime >= endTime) continue;
 
                 workedDay.setCompany(company);
@@ -125,24 +121,5 @@ public class WorkedDayService {
         if(daysFound < 7) return null;
 
         return workedDays;
-    }
-
-    public List<WorkedDay> updateWorkedDay(List<WorkedDay> workedDays, Long companyId) {
-        if(workedDays.size() < 7)
-            throw new BadRequestException("Please report every day of the week");
-
-        UserSecurity userLogged = UserService.getUserAuthenticated();
-        Company company = this.companyService.findById(companyId);
-        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && !company.getUser().getId().equals(userLogged.getId()))
-            throw new PermissionDaniedException("Permission danied");
-
-        if(company.getWorkedDays().size() > 0)
-            throw new BadRequestException("There are already days of work for this company");
-
-        List<WorkedDay> currentDays = this.verifyWorkedDays(workedDays, company);
-        if(currentDays == null)
-            throw new BadRequestException("Some of the dates may be wrong or do not exist");
-
-        return null;
     }
 }

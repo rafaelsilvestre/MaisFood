@@ -53,7 +53,7 @@ public class Company extends Generic {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "company")
     private List<WorkedDay> workedDays;
 
     @OneToMany(mappedBy = "company")
