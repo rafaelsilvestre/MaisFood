@@ -35,7 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-        "/user/**"
+        "/user/**",
+        "/company"
     };
 
     private static final String[] PUBLIC_MATCHERS_DELETE = {
