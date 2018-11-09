@@ -1,10 +1,10 @@
 package br.com.omaisfood.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "credit_cards")
 public class Card {
