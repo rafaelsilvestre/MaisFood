@@ -47,7 +47,7 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "permissions")
-    private List<Integer> permissions = new ArrayList<>();
+    private List<Permission> permissions = new ArrayList<Permission>();
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -144,11 +144,12 @@ public class User {
     }
 
     public List<Permission> getPermissions() {
-        return permissions.stream().map(x -> Permission.toEnum(x)).collect(Collectors.toList());
+        return permissions.stream().map(x -> Permission.toEnum(x.getIdentifier())).collect(Collectors.toList());
     }
 
     public void setPermissions(Permission permission) {
-        this.permissions.add(permission.getIdentifier());
+        System.out.println("PERMISSION " + permission.getFlag());
+        this.permissions.add(permission);
     }
 
     public Address getAddressDefault() {

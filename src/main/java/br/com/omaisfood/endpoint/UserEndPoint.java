@@ -34,6 +34,12 @@ public class UserEndPoint {
         return new ResponseEntity<User>(this.userService.saveUser(user), HttpStatus.OK);
     }
 
+    @PostMapping(path = "/new-client")
+    public ResponseEntity<User> saveNewClient(@RequestBody User user) {
+        User client = this.userService.saveClient(user);
+        return new ResponseEntity<User>(client, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/permissions")
     public ResponseEntity<?> getUserPermissions() {
         UserSecurity userLogged = this.userService.getUserAuthenticated();

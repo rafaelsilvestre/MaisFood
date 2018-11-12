@@ -5,6 +5,7 @@ import br.com.omaisfood.model.User;
 import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.repository.UserRepository;
 import br.com.omaisfood.security.UserSecurity;
+import br.com.omaisfood.service.exception.EmailExistsException;
 import br.com.omaisfood.service.exception.PermissionDaniedException;
 import br.com.omaisfood.service.exception.UserNotFoundException;
 import br.com.omaisfood.utils.Utils;
@@ -84,6 +85,18 @@ public class UserService {
         if(user.getPermissions().size() == 0)
             user.setPermissions(Permission.ADMIN);
 
+        String passwordEncoded = Utils.cryptPassword(user);
+        user.setPassword(passwordEncoded);
+        return this.userRepository.save(user);
+    }
+
+    public User saveClient(User user){
+        Boolean clientExists = this.userRepository.existsByEmail(user.getEmail());
+        if(clientExists){
+            throw new EmailExistsException("An account with this email already exists");
+        }
+
+        user.setPermissions(Permission.CLIENT);
         String passwordEncoded = Utils.cryptPassword(user);
         user.setPassword(passwordEncoded);
         return this.userRepository.save(user);
