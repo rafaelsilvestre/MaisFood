@@ -93,7 +93,7 @@ public class UserService {
     public User saveClient(User user){
         Boolean clientExists = this.userRepository.existsByEmail(user.getEmail());
         if(clientExists){
-            throw new EmailExistsException("An account with this email already exists");
+            throw new EmailExistsException("an-account-with-this-email-already-exists");
         }
 
         user.setPermissions(Permission.CLIENT);
