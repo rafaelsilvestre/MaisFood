@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +28,11 @@ public class UserService {
     }
 
     public List<User> getAllUsers(){
-        return this.userRepository.findAll();
+        List<Permission> permissions = new ArrayList<Permission>();
+        permissions.add(Permission.CLIENT);
+        permissions.add(Permission.ADMIN);
+
+        return this.userRepository.findAllByPermissionsIn(permissions);
     }
 
     public User findByEmail(User user) {
