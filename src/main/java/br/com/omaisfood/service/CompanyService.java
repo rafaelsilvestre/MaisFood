@@ -27,7 +27,7 @@ public class CompanyService {
     }
 
     public List<Company> getAllCompanies(){
-        return this.companyRepository.findAll();
+        return this.companyRepository.findAllByOrderByIdDesc();
     }
 
     public Company saveCompany(Company company, User user) {
