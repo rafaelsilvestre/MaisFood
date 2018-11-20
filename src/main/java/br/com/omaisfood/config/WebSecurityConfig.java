@@ -35,13 +35,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHERS_POST  = {
         "/user/**",
         "/new-client",
-        "/upload/company/**"
+        "/upload/company/**",
+        "/upload/product/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
         "/user/**",
         "/company",
-        "/upload/company/**"
+        "/product/**",
+        "/upload/company/**",
+        "/upload/product/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_DELETE = {
