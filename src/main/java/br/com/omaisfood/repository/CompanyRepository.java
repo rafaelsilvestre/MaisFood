@@ -13,4 +13,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     Boolean existsByUserId(Long userId);
 
     List<Company> findAllByOrderByIdDesc();
+
+    List<Company> findByDistricts_DistrictId(Long districtId);
 }

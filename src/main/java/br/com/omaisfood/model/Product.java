@@ -1,21 +1,16 @@
 package br.com.omaisfood.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity(name = "products")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -41,10 +36,6 @@ public class Product {
     @JsonBackReference("company")
     @JoinColumn(name = "company_id")
     private Company company;
-
-    @OneToMany(mappedBy = "product")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Additional> additionals;
 
     public Long getId() {
         return id;
@@ -100,13 +91,5 @@ public class Product {
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public List<Additional> getAdditionals() {
-        return additionals;
-    }
-
-    public void setAdditionals(Additional additional) {
-        this.additionals.add(additional);
     }
 }

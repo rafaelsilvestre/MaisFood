@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class Address {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "Identificador do endereço não pode estar vazio")

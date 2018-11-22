@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "worked_day")
 public class WorkedDay {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

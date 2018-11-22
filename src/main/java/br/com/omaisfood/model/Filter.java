@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 public class Filter {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity(name = "payment_methods")
 public class PaymentMethod {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty

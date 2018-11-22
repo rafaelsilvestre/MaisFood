@@ -99,4 +99,8 @@ public class CompanyService {
 
         return this.companyRepository.getCompanyByUserId(userId);
     }
+
+    public List<Company> getCompanyByDistrinct(Long distrinctId) {
+        return this.companyRepository.findByDistricts_DistrictId(distrinctId);
+    }
 }

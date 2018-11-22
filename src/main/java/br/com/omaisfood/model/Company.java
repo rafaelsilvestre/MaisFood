@@ -11,7 +11,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
 @Table(indexes = {@Index(name = "company_name",  columnList="name")})
 public class Company extends Generic {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "O nome deve ser informado!")
@@ -67,6 +66,10 @@ public class Company extends Generic {
     @OneToMany(mappedBy = "company")
     @Fetch(FetchMode.SUBSELECT)
     private List<Category> categories;
+
+    @OneToMany(mappedBy = "company")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<DistrictItem> districts;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -183,6 +186,14 @@ public class Company extends Generic {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<DistrictItem> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<DistrictItem> districts) {
+        this.districts = districts;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -4,7 +4,6 @@ import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.dto.CompanyFormEdit;
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
-import br.com.omaisfood.model.WorkedDay;
 import br.com.omaisfood.service.CompanyService;
 import br.com.omaisfood.service.UserService;
 import br.com.omaisfood.service.WorkedDayService;
@@ -81,5 +80,10 @@ public class CompanyEndPoint {
     public ResponseEntity<Company> updateCompany(@RequestBody @Valid CompanyFormEdit companyFormEdit, @PathVariable Long companyId) {
         Company company = this.companyService.updateCompany(Company.fromCompanyFormEdit(companyFormEdit), companyId);
         return new ResponseEntity<Company>(company, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/district/{districtId}")
+    public ResponseEntity<List<Company>> getAllCompaniesByDistrict(@PathVariable Long districtId) {
+        return new ResponseEntity<>(this.companyService.getCompanyByDistrinct(districtId), HttpStatus.OK);
     }
 }

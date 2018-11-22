@@ -10,7 +10,7 @@ import java.util.List;
 @Entity(name = "order_items")
 public class OrderItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -30,10 +30,6 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @OneToMany(mappedBy = "orderItem")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<AdditionalItem> additionalItems;
 
     public Long getId() {
         return id;
@@ -73,13 +69,5 @@ public class OrderItem {
 
     public void setOrder(Order order) {
         this.order = order;
-    }
-
-    public List<AdditionalItem> getAdditionalItems() {
-        return additionalItems;
-    }
-
-    public void setAdditionalItems(AdditionalItem additionalItem) {
-        this.additionalItems.add(additionalItem);
     }
 }

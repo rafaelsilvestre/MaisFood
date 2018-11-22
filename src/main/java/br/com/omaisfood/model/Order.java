@@ -14,7 +14,7 @@ import java.util.List;
 @Table(indexes = {@Index(name = "order_status",  columnList="status")})
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
