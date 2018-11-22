@@ -43,6 +43,9 @@ public class Company extends Generic {
     @Column(name = "is_inactive")
     private Boolean isInactive = false;
 
+    @Transient
+    private Boolean isOpened = false;
+
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
@@ -146,6 +149,14 @@ public class Company extends Generic {
 
     public void setInactive(Boolean isInactive) {
         this.isInactive = isInactive;
+    }
+
+    public Boolean getOpened() {
+        return isOpened;
+    }
+
+    public void setOpened(Boolean opened) {
+        isOpened = opened;
     }
 
     public Address getAddress() {

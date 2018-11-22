@@ -2,7 +2,9 @@ package br.com.omaisfood.service;
 
 import br.com.omaisfood.model.Company;
 import br.com.omaisfood.model.User;
+import br.com.omaisfood.model.WorkedDay;
 import br.com.omaisfood.model.enumerators.Permission;
+import br.com.omaisfood.model.enumerators.TypeDay;
 import br.com.omaisfood.repository.CompanyRepository;
 import br.com.omaisfood.security.UserSecurity;
 import br.com.omaisfood.service.exception.*;
@@ -11,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -19,7 +22,11 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Autowired UserService userService;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private WorkedDayService workedDayService;
 
     CompanyService(CompanyRepository companyRepository, UserService userService){
         this.companyRepository = companyRepository;
@@ -101,6 +108,40 @@ public class CompanyService {
     }
 
     public List<Company> getCompanyByDistrinct(Long distrinctId) {
-        return this.companyRepository.findByDistricts_DistrictId(distrinctId);
+        List<Company> companies = this.companyRepository.findByDistricts_DistrictId(distrinctId);
+
+        for(int i = 0; i < companies.size(); i++){
+            Company company = companies.get(i);
+            Calendar calendar = Calendar.getInstance();
+            Integer day = calendar.get(Calendar.DAY_OF_WEEK);
+            WorkedDay workedDay;
+
+            switch (day){
+                case Calendar.SUNDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SUNDAY, company.getId());
+                    break;
+                case Calendar.MONDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.MONDAY, company.getId());
+                    break;
+                case Calendar.TUESDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.TUESDAY, company.getId());
+                    break;
+                case Calendar.WEDNESDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.WEDNESDAY, company.getId());
+                    break;
+                case Calendar.THURSDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.THURSDAY, company.getId());
+                    break;
+                case Calendar.FRIDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.FRIDAY, company.getId());
+                    break;
+                case Calendar.SATURDAY:
+                    workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SATURDAY, company.getId());
+                    break;
+            }
+
+            
+        }
+        return ;
     }
 }

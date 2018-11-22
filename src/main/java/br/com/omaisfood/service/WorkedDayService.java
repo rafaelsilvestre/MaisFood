@@ -54,7 +54,7 @@ public class WorkedDayService {
         return this.workedDayRepository.saveAll(currentDays);
     }
 
-    public List<WorkedDay> verifyWorkedDays(List<WorkedDay> workedDays, Company company) {
+    private List<WorkedDay> verifyWorkedDays(List<WorkedDay> workedDays, Company company) {
         WorkedDay[] days = new WorkedDay[7];
         int daysFound = 0;
         for(WorkedDay workedDay: workedDays){
@@ -125,5 +125,9 @@ public class WorkedDayService {
         if(daysFound < 7) return null;
 
         return workedDays;
+    }
+
+    public WorkedDay getWorkedDayByDayAndCompanyId(TypeDay day, Long companyId) {
+        return this.workedDayRepository.getWorkedDayByDayAndCompanyId(day, companyId);
     }
 }
