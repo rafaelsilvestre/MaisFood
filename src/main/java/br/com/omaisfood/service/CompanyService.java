@@ -1,8 +1,6 @@
 package br.com.omaisfood.service;
 
-import br.com.omaisfood.model.Company;
-import br.com.omaisfood.model.User;
-import br.com.omaisfood.model.WorkedDay;
+import br.com.omaisfood.model.*;
 import br.com.omaisfood.model.enumerators.Permission;
 import br.com.omaisfood.model.enumerators.TypeDay;
 import br.com.omaisfood.repository.CompanyRepository;
@@ -11,13 +9,12 @@ import br.com.omaisfood.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 @Service
-@Transactional
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
@@ -27,6 +24,9 @@ public class CompanyService {
 
     @Autowired
     private WorkedDayService workedDayService;
+
+    @Autowired
+    private FilterItemService filterItemService;
 
     CompanyService(CompanyRepository companyRepository, UserService userService){
         this.companyRepository = companyRepository;
@@ -47,7 +47,20 @@ public class CompanyService {
             throw new ErrorCreatingUserException("Erro ao criar um usuário e associar a empresa");
 
         company.setUser(newUser);
-        return this.companyRepository.save(company);
+        // Save this company
+        Company c = this.companyRepository.save(company);
+
+        List<WorkedDay> workedDays = new ArrayList<WorkedDay>();
+        workedDays.add(new WorkedDay(TypeDay.SUNDAY, "08:00", "18:00", false, c));
+        workedDays.add(new WorkedDay(TypeDay.MONDAY, "08:00", "18:00", true, c));
+        workedDays.add(new WorkedDay(TypeDay.TUESDAY, "08:00", "18:00", true, c));
+        workedDays.add(new WorkedDay(TypeDay.WEDNESDAY, "08:00", "18:00", true, c));
+        workedDays.add(new WorkedDay(TypeDay.THURSDAY, "08:00", "18:00", true, c));
+        workedDays.add(new WorkedDay(TypeDay.FRIDAY, "08:00", "18:00", true, c));
+        workedDays.add(new WorkedDay(TypeDay.SATURDAY, "08:00", "18:00", false, c));
+        this.workedDayService.saveWorkedDay(workedDays, c.getId());
+
+        return company;
     }
 
     public Company saveCompany(Company company) {
@@ -79,7 +92,7 @@ public class CompanyService {
         return this.companyRepository.findById(user.getCompany().getId()).get();
     }
 
-    public Company updateCompany(Company newCompany, Long companyId) {
+    public Company updateCompany(Company newCompany, List<Filter> filters, Long companyId) {
         UserSecurity userLogged = UserService.getUserAuthenticated();
 
         Boolean companyExists = this.companyRepository.existsById(companyId);
@@ -94,6 +107,16 @@ public class CompanyService {
         company.setName(newCompany.getName());
         company.setDescription(newCompany.getDescription());
         company.setMinimumValue(newCompany.getMinimumValue());
+
+        this.filterItemService.removeFilterItem(companyId);
+
+        filters.forEach(filter -> {
+            Boolean exists = this.filterItemService.filterExists(companyId, filter.getId());
+            // Save this Filte in company
+            if(!exists) {
+                this.filterItemService.save(new FilterItem(filter, company));
+            }
+        });
 
         return this.companyRepository.save(company);
     }
@@ -115,6 +138,8 @@ public class CompanyService {
             Calendar calendar = Calendar.getInstance();
             Integer day = calendar.get(Calendar.DAY_OF_WEEK);
             WorkedDay workedDay;
+
+            System.out.println("DAY " + day);
 
             switch (day){
                 case Calendar.SUNDAY:
@@ -142,6 +167,7 @@ public class CompanyService {
 
             
         }
-        return ;
+
+        return companies;
     }
 }

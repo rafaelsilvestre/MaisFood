@@ -20,7 +20,7 @@ public class FilterService {
     }
 
     public List<Filter> getAllFilters() {
-        return this.filterRepository.findAll();
+        return this.filterRepository.findAllByOrderByIdDesc();
     }
 
     public Filter saveFilter(Filter filter) {
@@ -42,5 +42,11 @@ public class FilterService {
         }
 
         return this.filterRepository.findById(id).get();
+    }
+
+    public Filter updateFilter(Filter f) {
+        Filter filter = this.find(f.getId());
+
+        return this.filterRepository.save(filter);
     }
 }

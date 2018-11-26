@@ -183,6 +183,14 @@ public class Company extends Generic {
         this.workedDays = workedDays;
     }
 
+    public List<FilterItem> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(FilterItem filter) {
+        this.filters.add(filter);
+    }
+
     public List<Product> getProducts() {
         return products;
     }

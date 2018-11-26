@@ -29,7 +29,7 @@ public class ProductService {
         //if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && !company.getUser().getId().equals(userLogged.getId()))
             //throw new PermissionDaniedException("Permission danied");
 
-        return this.productRepository.findAll();
+        return this.productRepository.findAllByCompanyId(companyId);
     }
 
     public Product saveProduct(Product product, Long companyId) {

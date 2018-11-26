@@ -14,6 +14,13 @@ public class Filter {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
+    public Filter() { }
+
+    public Filter(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

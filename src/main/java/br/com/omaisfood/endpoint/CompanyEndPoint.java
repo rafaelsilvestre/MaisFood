@@ -3,10 +3,10 @@ package br.com.omaisfood.endpoint;
 import br.com.omaisfood.dto.CompanyForm;
 import br.com.omaisfood.dto.CompanyFormEdit;
 import br.com.omaisfood.model.Company;
+import br.com.omaisfood.model.Filter;
+import br.com.omaisfood.model.FilterItem;
 import br.com.omaisfood.model.User;
-import br.com.omaisfood.service.CompanyService;
-import br.com.omaisfood.service.UserService;
-import br.com.omaisfood.service.WorkedDayService;
+import br.com.omaisfood.service.*;
 import br.com.omaisfood.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,24 +23,16 @@ public class CompanyEndPoint {
     private CompanyService companyService;
 
     @Autowired
-    private WorkedDayService workedDayService;
+    private FilterItemService filterItemService;
 
     @Autowired
-    private UserService userService;
+    private EmailService emailService;
 
-    CompanyEndPoint(CompanyService companyService, WorkedDayService workedDayService, UserService userService) {
-        this.companyService = companyService;
-        this.workedDayService = workedDayService;
-        this.userService = userService;
-    }
-
-    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Company>> getAllCompanies() {
         return new ResponseEntity<>(this.companyService.getAllCompanies(), HttpStatus.OK);
     }
 
-    @CrossOrigin
     @PostMapping
     public ResponseEntity<Company> saveCompany(@RequestBody @Valid CompanyForm companyForm) {
         Company company = Company.fromCompanyForm(companyForm);
@@ -48,6 +40,15 @@ public class CompanyEndPoint {
 
         // Save this company
         Company newCompany = this.companyService.saveCompany(company, user);
+
+        companyForm.getCategories().forEach(category -> {
+            Filter filter = new Filter(category.getId(), category.getName());
+            // Save this Filte in company
+            this.filterItemService.save(new FilterItem(filter, newCompany));
+        });
+
+        this.emailService.sendEmail();
+
         return new ResponseEntity<Company>(newCompany, HttpStatus.OK);
     }
 
@@ -63,7 +64,6 @@ public class CompanyEndPoint {
         return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
         try{
@@ -78,7 +78,7 @@ public class CompanyEndPoint {
 
     @PutMapping(path = "/{companyId}")
     public ResponseEntity<Company> updateCompany(@RequestBody @Valid CompanyFormEdit companyFormEdit, @PathVariable Long companyId) {
-        Company company = this.companyService.updateCompany(Company.fromCompanyFormEdit(companyFormEdit), companyId);
+        Company company = this.companyService.updateCompany(Company.fromCompanyFormEdit(companyFormEdit), companyFormEdit.getCategories(), companyId);
         return new ResponseEntity<Company>(company, HttpStatus.OK);
     }
 

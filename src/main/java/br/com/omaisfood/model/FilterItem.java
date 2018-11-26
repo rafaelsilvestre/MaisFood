@@ -1,5 +1,7 @@
 package br.com.omaisfood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -16,8 +18,16 @@ public class FilterItem {
 
     @NotNull
     @ManyToOne
+    @JsonBackReference("company")
     @JoinColumn(name = "company_id")
     private Company company;
+
+    public FilterItem() { }
+
+    public FilterItem(Filter filter, Company company) {
+        this.filter = filter;
+        this.company = company;
+    }
 
     public Long getId() {
         return id;

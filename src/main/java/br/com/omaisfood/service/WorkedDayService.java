@@ -44,12 +44,14 @@ public class WorkedDayService {
             throw new BadRequestException("Some of the dates may be wrong or do not exist");
         }
 
-        if(company.getWorkedDays().size() == 7){
-            currentDays.forEach(workedDay -> {
-                WorkedDay day = this.workedDayRepository.getWorkedDayByDayAndCompanyId(workedDay.getDay(), companyId);
-                if(day != null) workedDay.setId(day.getId());
-            });
-        }
+        try{
+            if(company.getWorkedDays().size() == 7){
+                currentDays.forEach(workedDay -> {
+                    WorkedDay day = this.workedDayRepository.getWorkedDayByDayAndCompanyId(workedDay.getDay(), companyId);
+                    if(day != null) workedDay.setId(day.getId());
+                });
+            }
+        }catch (NullPointerException e){ }
 
         return this.workedDayRepository.saveAll(currentDays);
     }

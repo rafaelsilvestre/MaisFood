@@ -30,6 +30,16 @@ public class WorkedDay {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    public WorkedDay() { }
+
+    public WorkedDay(TypeDay day, String startTime, String endTime, boolean enabled, Company company) {
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.enabled = enabled;
+        this.company = company;
+    }
+
     public Long getId() {
         return id;
     }
