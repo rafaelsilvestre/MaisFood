@@ -31,7 +31,11 @@ public class UserEndPoint {
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        return new ResponseEntity<User>(this.userService.saveUser(user), HttpStatus.OK);
+        User u = null;
+        try{
+            u = this.userService.saveUser(user);
+        }catch (NullPointerException e) { }
+        return new ResponseEntity<User>(u, HttpStatus.OK);
     }
 
     @PostMapping(path = "/new-client")

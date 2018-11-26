@@ -16,6 +16,15 @@ INSERT INTO users (name, last_name, email, password) VALUES
 INSERT INTO permissions (users_id, permissions) VALUES
 (1, 0);
 
+INSERT INTO users (name, last_name, email, password) VALUES
+('Rafael', 'Silvestre', 'rafaelsilvestre.1@hotmail.com', '$2a$10$K6bDGxYgi9vsMTT.labvXuRnVaCrGmbYsVD1RE9ZeJw/3inIX9TtG');
+
+INSERT INTO permissions (users_id, permissions) VALUES
+(2, 2);
+
+INSERT INTO adresses (identifier, state, city, street, district, number, complement, user_id) VALUES
+('Casa', 'Goiás', 'Goiânia', 'Rua tal', 'Bairro', 23, 'Quadre e Lote', 2);
+
 INSERT INTO districts (id, name) VALUES
 ( 1, 'Aeroporto'),
 ( 2, 'Aeroviario'),

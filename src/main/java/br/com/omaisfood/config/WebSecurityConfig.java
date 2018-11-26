@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/upload/company/**",
         "/upload/product/**",
         "/district/**",
+        "/adresses/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
