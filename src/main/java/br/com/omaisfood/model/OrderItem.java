@@ -1,11 +1,8 @@
 package br.com.omaisfood.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity(name = "order_items")
 public class OrderItem {
