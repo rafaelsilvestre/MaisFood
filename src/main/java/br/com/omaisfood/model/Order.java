@@ -1,7 +1,7 @@
 package br.com.omaisfood.model;
 
-import br.com.omaisfood.model.enumerators.DeliveryMethod;
 import br.com.omaisfood.model.enumerators.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -26,8 +26,7 @@ public class Order {
     private OrderStatus status;
 
     @NotNull
-    @Column(name = "delivery_method", nullable = false)
-    private DeliveryMethod deliveryMethod;
+    private Float totalPrice;
 
     @NotNull
     @ManyToOne
@@ -41,11 +40,12 @@ public class Order {
 
     @NotNull
     @ManyToOne
+    @JsonBackReference("company")
     @JoinColumn(name = "company_id")
     private Company company;
 
     @OneToMany(mappedBy = "order")
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(FetchMode.SELECT)
     private List<OrderItem> orderItems;
 
     public Long getId() {
@@ -102,5 +102,13 @@ public class Order {
 
     public void setOrderItem(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

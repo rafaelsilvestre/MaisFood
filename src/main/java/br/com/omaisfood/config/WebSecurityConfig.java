@@ -37,7 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/upload/company/**",
         "/upload/product/**",
         "/district/**",
-        "/adresses/**"
+        "/adresses/**",
+        "/order/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
@@ -48,10 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         "/district/**",
         "/upload/company/**",
         "/upload/product/**",
+        "/order/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_DELETE = {
-        "/user/**"
+        "/user/**",
+        "/order/**"
     };
 
     @Override

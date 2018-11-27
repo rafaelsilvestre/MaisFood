@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -79,7 +82,9 @@ public class CompanyService {
         Boolean isExists = this.companyRepository.existsById(id);
         if(!isExists)
             throw new ObjectNotFoundException("Empresa não encontrada");
-        return this.companyRepository.findById(id).get();
+
+        Company company = this.companyRepository.findById(id).get();
+        return this.verifyCompanyIsOpened(company);
     }
 
     public Company getCompanyByUserLogged() {
@@ -127,7 +132,8 @@ public class CompanyService {
             return null;
         }
 
-        return this.companyRepository.getCompanyByUserId(userId);
+        Company company = this.companyRepository.getCompanyByUserId(userId);
+        return this.verifyCompanyIsOpened(company);
     }
 
     public List<Company> getCompanyByDistrinct(Long distrinctId) {
@@ -136,38 +142,114 @@ public class CompanyService {
         for(int i = 0; i < companies.size(); i++){
             Company company = companies.get(i);
             Calendar calendar = Calendar.getInstance();
-            Integer day = calendar.get(Calendar.DAY_OF_WEEK);
-            WorkedDay workedDay;
 
-            System.out.println("DAY " + day);
-
-            switch (day){
-                case Calendar.SUNDAY:
+            WorkedDay workedDay = null;
+            switch (calendar.get(Calendar.DAY_OF_WEEK)){
+                case 1:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SUNDAY, company.getId());
                     break;
-                case Calendar.MONDAY:
+                case 2:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.MONDAY, company.getId());
                     break;
-                case Calendar.TUESDAY:
+                case 3:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.TUESDAY, company.getId());
                     break;
-                case Calendar.WEDNESDAY:
+                case 4:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.WEDNESDAY, company.getId());
                     break;
-                case Calendar.THURSDAY:
+                case 5:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.THURSDAY, company.getId());
                     break;
-                case Calendar.FRIDAY:
+                case 6:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.FRIDAY, company.getId());
                     break;
-                case Calendar.SATURDAY:
+                case 7:
                     workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SATURDAY, company.getId());
                     break;
             }
 
-            
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int year = calendar.get(Calendar.YEAR);
+
+            try {
+                String a = String.format("%s%s%s %s", day, month, year, workedDay.getStartTime());
+                String b = String.format("%s%s%s %s", day, month, year, workedDay.getEndTime());
+                SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy hh:mm");
+
+                Date now = new Date();
+                Date startTime = new Date(format.parse(a).getTime());
+                Date endTime = new Date(format.parse(b).getTime());
+
+                if(now.after(startTime) && now.before(endTime)){
+                    if(workedDay.isEnabled()){
+                        companies.get(i).setOpened(true);
+                    }
+                }else{
+                    companies.get(i).setOpened(false);
+                }
+            } catch (ParseException e) {
+                companies.get(i).setOpened(false);
+            }
         }
 
         return companies;
+    }
+
+    public Company verifyCompanyIsOpened(Company company) {
+        Calendar calendar = Calendar.getInstance();
+
+        WorkedDay workedDay = null;
+        switch (calendar.get(Calendar.DAY_OF_WEEK)){
+            case 1:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SUNDAY, company.getId());
+                break;
+            case 2:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.MONDAY, company.getId());
+                break;
+            case 3:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.TUESDAY, company.getId());
+                break;
+            case 4:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.WEDNESDAY, company.getId());
+                break;
+            case 5:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.THURSDAY, company.getId());
+                break;
+            case 6:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.FRIDAY, company.getId());
+                break;
+            case 7:
+                workedDay = this.workedDayService.getWorkedDayByDayAndCompanyId(TypeDay.SATURDAY, company.getId());
+                break;
+        }
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+
+        try {
+            String a = String.format("%s%s%s %s", day, month, year, workedDay.getStartTime());
+            String b = String.format("%s%s%s %s", day, month, year, workedDay.getEndTime());
+            SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy hh:mm");
+
+            Date now = new Date();
+            Date startTime = new Date(format.parse(a).getTime());
+            Date endTime = new Date(format.parse(b).getTime());
+
+            if(now.after(startTime) && now.before(endTime)){
+                if(workedDay.isEnabled()){
+                    company.setOpened(true);
+                }
+            }else{
+                company.setOpened(false);
+            }
+        } catch (ParseException e) {
+            company.setOpened(false);
+        } catch (NullPointerException e) {
+            company.setOpened(false);
+        }
+
+        return company;
     }
 }

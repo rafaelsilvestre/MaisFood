@@ -1,6 +1,8 @@
 package br.com.omaisfood.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +22,7 @@ public class OrderItem {
 
     @NotNull
     @ManyToOne
+    @JsonBackReference("order")
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -27,6 +30,15 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public OrderItem() { }
+
+    public OrderItem(Float price, int quantity, Order order, Product product) {
+        this.price = price;
+        this.quantity = quantity;
+        this.order = order;
+        this.product = product;
+    }
 
     public Long getId() {
         return id;

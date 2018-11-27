@@ -82,10 +82,6 @@ public class ProductService {
 
         Product product = this.productRepository.findById(productId).get();
 
-        // Verify this user is system admin or company owner
-        if(userLogged == null || !userLogged.hasRole(Permission.ADMIN) && (product.getCompany() != null && !product.getCompany().getUser().getId().equals(userLogged.getId())))
-            throw new PermissionDaniedException("Permission danied");
-
         return product;
     }
 
